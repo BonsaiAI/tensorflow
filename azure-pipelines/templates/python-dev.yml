@@ -1,0 +1,41 @@
+# Ensure python setup with python-dev and pip as required for the
+# Tensorflow build-from-sources
+
+parameters:
+  python.version:
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+  - bash: |
+      if [[ "${AGENT_OS}" == "Linux" ]]; then
+        sudo apt install -y python3-dev
+      elif [[ "${AGENT_OS}" == "Darwin" ]]; then
+        echo TODO SET UP PYTHON HEADERS FOR DARWIN
+      fi
+
+      which python
+      pip install -U --user pip numpy wheel
+      pip install -U --user keras_preprocessing --no-deps
+
+      # setup venv
+      mkdir "$PIPELINE_WORKSPACE/venv"
+      PENV_HOME="$PIPELINE_WORKSPACE/venv/p3"
+
+      # Export PENV_HOME to other jobs. They now could presumably refer
+      # to it as $(penv.home) if needed.
+      echo "##vso[task.setvariable variable=penv.home]$PENV_HOME"
+
+      python -m venv $PENV_HOME
+      source $PENV_HOME/bin/activate
+      echo switched to venv python: $(which python)
+
+      python -m pip install --upgrade pip
+      python -m pip install --upgrade setuptools
+      python -m pip install --upgrade twine
+      pip install -U pip numpy wheel
+      pip install -U keras_preprocessing --no-deps
+    displayName: 'Setup Python and Dependencies'
+
