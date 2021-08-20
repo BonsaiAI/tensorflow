@@ -6,17 +6,22 @@
 steps:
   - bash: |
       set -xe
-      if [ -x "$(command -v bazel)" -a -x "$(command -v bazelisk)" ]; then
-        echo 'Bazel is already installed'
-        bazel info
-        bazel --version
-        exit 0
-      fi
-      if [[ $AGENT_OS == "Darwin" ]]; then
-        . $HELPER_SCRIPTS/bazel-osx.sh"
+
+      # We insist on bazelisk to be installed since it is able to
+      # run a specific bazel version, not necessarily the installed one.
+
+      if [[ -x "$(command -v bazelisk)" ]]; then
+        echo 'Bazelisk is already installed'
       else
-        . #HELPER_SCRIPTS/linux-bazelisk
+        if [[ $AGENT_OS == "Darwin" ]]; then
+          . $HELPER_SCRIPTS/osx-bazelisk.sh
+        else
+          . $HELPER_SCRIPTS/linux-bazelisk
+        fi
       fi
+
+      bazelisk --version
+      bazelisk shutdown
       exit 0
     env:
       HELPER_SCRIPTS: $(Build.SourcesDirectory)/azure_pipelines/scripts

@@ -4,9 +4,10 @@
 variables:
   artifactFeed:
 
-  WHEELS_DIR: /tmp/tensorflow_pkg
+  wheels.dir: /tmp/tensorflow_pkg
   bazel.startup.opts: --batch_cpu_scheduling --io_nice_level 7
   bazel.build.opts: --jobs 6 --local_ram_resources=HOST_RAM*0.8
+  numpy.version: '<1.19.0'
 
 name: $(BuildDefinitionName)_$(SourceBranchName)_$(BuildID)
 stages:
@@ -38,17 +39,48 @@ stages:
             displayName: "Configure a default TF2 build"
           - template : templates/wheel-version.yml
           - bash: |
-              bazel $BAZEL_STARTUP_OPTS build $BAZEL_BUILD_OPTS //tensorflow/tools/pip_package:build_pip_package
+              # Doesn't work if installed in just the env, for includes
+              # specific to TF 2.3.0 -- restrict numpy version.
+              python -m pip install -U "numpy${NUMPY_VERSION}"
+
+              source $PENV_HOME/bin/activate
+              echo switched to venv python: $(which python)
+              gcc --version
+              bazelisk --version
+
+              python -m pip install -U "numpy${NUMPY_VERSION}"
+              python -m pip install -U keras_preprocessing --no-deps
+              python -m pip install -U keras_applications --no-deps
+
+              # Retry for spurious failures. Bazel should cache successful steps.
+              for i in 1 2; do
+
+                echo Compilation attempt $i...
+
+                bazelisk $BAZEL_STARTUP_OPTS build $BAZEL_BUILD_OPTS //tensorflow/tools/pip_package:build_pip_package
+                compile_result="$?"
+                if [[ compile_result == 0 ]]; then
+                  break
+                fi
+              done
+
+              if [[ compile_result != 0 ]]; then
+                echo Compilation failed after $i attempts.
+              fi
+
+              exit $compile_result
             displayName: 'Bazel build'
           - bash: |
-              tensorflow/tools/pip_package/build_pip_package.sh $(WHEELS_DIR)
+              source $PENV_HOME/bin/activate
+              echo switched to venv python: $(which python)
+              tensorflow/tools/pip_package/build_pip_package.sh ${WHEELS_DIR}
             displayName: 'Generate Wheels'
           - task: TwineAuthenticate@1
             displayName: 'Twine Authenticate'
             inputs:
               artifactFeed: ${{variables.artifactFeed}}
           - bash: |
-              python -m twine upload -r ${{variables.artifactFeed}} $(WHEELS_DIR)/*
+              python -m twine upload -r ${{variables.artifactFeed}} ${WHEELS_DIR}/*
             displayName: 'Upload to ray-feed'
           - task: ComponentGovernanceComponentDetection@0
             inputs:

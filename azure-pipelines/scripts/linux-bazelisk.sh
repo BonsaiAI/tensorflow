@@ -5,5 +5,3 @@
 
 echo "Install Bazelisk"
 sudo npm install -g @bazel/bazelisk
-
-bazelisk --version

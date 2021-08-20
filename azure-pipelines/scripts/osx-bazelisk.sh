@@ -5,5 +5,3 @@
 
 echo "Install Bazelisk"
 brew install bazelisk
-
-bazelisk --version

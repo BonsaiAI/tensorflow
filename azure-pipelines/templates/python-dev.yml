@@ -17,8 +17,7 @@ steps:
       fi
 
       which python
-      pip install -U --user pip numpy wheel
-      pip install -U --user keras_preprocessing --no-deps
+      pip install -U --user pip wheel
 
       # setup venv
       mkdir "$PIPELINE_WORKSPACE/venv"
@@ -32,8 +31,8 @@ steps:
       source $PENV_HOME/bin/activate
       echo switched to venv python: $(which python)
 
-      python -m pip install --upgrade pip
-      python -m pip install --upgrade setuptools
+      python -m pip install --upgrade pip six
+      python -m pip install --upgrade setuptools mock 'future>=0.17.1'
       python -m pip install --upgrade twine
       pip install -U pip numpy wheel
       pip install -U keras_preprocessing --no-deps
