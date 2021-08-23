@@ -22,15 +22,13 @@ stages:
               imageName: 'ubuntu-20.04'
               python.version: '3.8'
               use.bazel.version: 3.1.0
-              pool.name: 'ADORayTests'
-#            macos1015_python38:
-#              imageName: 'macOS-10.15'
-#              python.version: '3.8'
-#              use.bazel.version: 3.1.0
+            macos1015_python38:
+              imageName: 'macOS-10.15'
+              python.version: '3.8'
+              use.bazel.version: 3.1.0
         displayName: Bazel build
         pool:
-#          vmImage: $(imageName)
-          name: $(pool.name)
+          vmImage: $(imageName)
         steps:
           - template: templates/python-dev.yml
           - template: templates/check-bazel.yml
