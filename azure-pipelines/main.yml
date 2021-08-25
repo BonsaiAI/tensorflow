@@ -19,16 +19,18 @@ stages:
         strategy:
           matrix:
             linux_python38:
-              imageName: 'ubuntu-20.04'
+              image.name: 'ubuntu-20.04'
+              pool.name: ADOTFBuild
               python.version: '3.8'
               use.bazel.version: 3.1.0
-            macos1015_python38:
-              imageName: 'macOS-10.15'
-              python.version: '3.8'
-              use.bazel.version: 3.1.0
+#            macos1015_python38:
+#              image.name: 'macOS-10.15'
+#              python.version: '3.8'
+#              use.bazel.version: 3.1.0
         displayName: Bazel build
         pool:
-          vmImage: $(imageName)
+          #vmImage: $(image.name)
+          name: $(pool.name)
         steps:
           - template: templates/python-dev.yml
           - template: templates/check-bazel.yml
