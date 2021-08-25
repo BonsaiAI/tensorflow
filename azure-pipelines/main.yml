@@ -48,6 +48,8 @@ stages:
               # Doesn't work if installed in just the env, for includes
               # specific to TF 2.3.0 -- restrict numpy version.
               python -m pip install -U "numpy${NUMPY_VERSION}"
+              python -m pip install -U keras_preprocessing --no-deps --force-reinstall
+              python -m pip install -U keras_applications --no-deps --force-reinstall
 
               source $PENV_HOME/bin/activate
               echo switched to venv python: $(which python)
