@@ -16,7 +16,7 @@ steps:
         if [[ $AGENT_OS == "Darwin" ]]; then
           . $HELPER_SCRIPTS/osx-bazelisk.sh
         else
-          . $HELPER_SCRIPTS/linux-bazelisk
+          . $HELPER_SCRIPTS/linux-bazelisk.sh
         fi
       fi
 
@@ -24,6 +24,6 @@ steps:
       bazelisk shutdown
       exit 0
     env:
-      HELPER_SCRIPTS: $(Build.SourcesDirectory)/azure_pipelines/scripts
+      HELPER_SCRIPTS: $(Build.SourcesDirectory)/azure-pipelines/scripts
     displayName: 'Check Bazelisk'
     timeoutInMinutes: 60

@@ -1,14 +1,7 @@
-# Ensure python setup with python-dev and pip as required for the
-# Tensorflow build-from-sources
-
-parameters:
-  python.version:
+# Setting up python environment.
 
 steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-    displayName: 'Use Python $(python.version)'
+
   - bash: |
       if [[ "${AGENT_OS}" == "Linux" ]]; then
         sudo apt install -y python3-dev
@@ -37,4 +30,3 @@ steps:
       pip install -U pip numpy wheel
       pip install -U keras_preprocessing --no-deps
     displayName: 'Setup Python and Dependencies'
-

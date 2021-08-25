@@ -1,0 +1,11 @@
+# Set up python the usual way, from apt, without preloaded
+# toolset.
+
+steps:
+  - bash: |
+      sudo apt update -y
+      sudo apt install -y python3-pip
+      sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+      python --version
+  - template: python-env.yml
+

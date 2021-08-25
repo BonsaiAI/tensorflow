@@ -1,0 +1,12 @@
+# Ensure python setup with python-dev and pip as required for the
+# Tensorflow build-from-sources
+
+parameters:
+  python.version:
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+  - template: python-env.yml

@@ -31,7 +31,8 @@ stages:
           #vmImage: $(image.name)
           name: $(pool.name)
         steps:
-          - template: templates/python-dev.yml
+#          - template: templates/python-hosted.yml
+          - template: templates/python-vmss.yml
           - template: templates/check-bazel.yml
           - bash: |
               pushd $BUILD_SOURCESDIRECTORY
@@ -81,7 +82,7 @@ stages:
           - task: TwineAuthenticate@1
             displayName: 'Twine Authenticate'
             inputs:
-              artifactFeed: ${{variables.artifactFeed}}
+              artifactFeed: $(artifactFeed)
           - bash: |
               python -m twine upload -r ${{variables.artifactFeed}} ${WHEELS_DIR}/*
             displayName: 'Upload to ray-feed'
