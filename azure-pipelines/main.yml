@@ -19,7 +19,7 @@ stages:
           matrix:
             linux_python38:
               image.name: 'ubuntu-20.04'
-              pool.name: $(variables.linuxPool)
+              pool.name: $(linuxPool)
               python.version: '3.8'
               use.bazel.version: 3.1.0
 #            macos1015_python38:
