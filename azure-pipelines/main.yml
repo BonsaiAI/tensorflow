@@ -5,7 +5,7 @@ variables:
 
   wheels.dir: /tmp/tensorflow_pkg
   bazel.startup.opts: --batch_cpu_scheduling --io_nice_level 7
-  bazel.build.opts: --jobs 1 --local_ram_resources=HOST_RAM*.6
+  bazel.build.opts: --jobs 16 --local_ram_resources=HOST_RAM*.8
   numpy.version: '<1.19.0'
 
 name: $(BuildDefinitionName)_$(SourceBranchName)_$(BuildID)
