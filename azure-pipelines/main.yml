@@ -3,6 +3,7 @@
 
 variables:
   artifactFeed:
+  linuxPool:
 
   wheels.dir: /tmp/tensorflow_pkg
   bazel.startup.opts: --batch_cpu_scheduling --io_nice_level 7
@@ -20,7 +21,7 @@ stages:
           matrix:
             linux_python38:
               image.name: 'ubuntu-20.04'
-              pool.name: ADOTFBuild
+              pool.name: $(linuxPool)
               python.version: '3.8'
               use.bazel.version: 3.1.0
 #            macos1015_python38:
