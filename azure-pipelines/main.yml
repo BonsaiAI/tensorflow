@@ -2,7 +2,7 @@
 # This allow us to generate wheels and upload that to a feed.
 
 variables:
-
+  linux.pool.name: $(linuxPool)
   wheels.dir: /tmp/tensorflow_pkg
   bazel.startup.opts: --batch_cpu_scheduling --io_nice_level 7
   bazel.build.opts: --jobs 1 --local_ram_resources=HOST_RAM*.6
@@ -19,7 +19,7 @@ stages:
           matrix:
             linux_python38:
               image.name: 'ubuntu-20.04'
-              pool.name: $(linuxPool)
+              pool.name: $(linux.pool.name)
               python.version: '3.8'
               use.bazel.version: 3.1.0
 #            macos1015_python38:
