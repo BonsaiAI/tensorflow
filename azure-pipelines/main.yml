@@ -1,6 +1,9 @@
 # Minimal Build pipeline
 # This allow us to generate wheels and upload that to a feed.
 
+# Job expected variables:
+# artifactFeed: the feed name to upload to.
+# poolName: the VMSS pool name to run the job on.
 variables:
 
   wheels.dir: /tmp/tensorflow_pkg
@@ -85,7 +88,7 @@ stages:
             inputs:
               artifactFeed: $(artifactFeed)
           - bash: |
-              python -m twine upload -r ${{variables.artifactFeed}} ${WHEELS_DIR}/*
+              python -m twine upload -r ${ARTIFACTFEED} --config-file ${PYPIRC_PATH} ${WHEELS_DIR}/*
             displayName: 'Upload to ray-feed'
           - task: ComponentGovernanceComponentDetection@0
             inputs:
