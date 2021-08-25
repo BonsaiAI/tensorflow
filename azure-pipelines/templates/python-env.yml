@@ -15,6 +15,8 @@ steps:
       # setup venv
       mkdir "$PIPELINE_WORKSPACE/venv"
       PENV_HOME="$PIPELINE_WORKSPACE/venv/p3"
+      # clean it if stale
+      rm -rf ${PENV_HOME}
 
       # Export PENV_HOME to other jobs. They now could presumably refer
       # to it as $(penv.home) if needed.
