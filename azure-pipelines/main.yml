@@ -3,7 +3,6 @@
 
 variables:
   artifactFeed:
-  linuxPool: ADOTFBuild
 
   wheels.dir: /tmp/tensorflow_pkg
   bazel.startup.opts: --batch_cpu_scheduling --io_nice_level 7
