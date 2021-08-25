@@ -33,6 +33,7 @@ stages:
         steps:
 #          - template: templates/python-hosted.yml
           - template: templates/python-vmss.yml
+          - template: templates/npm-vmss.yml
           - template: templates/check-bazel.yml
           - bash: |
               pushd $BUILD_SOURCESDIRECTORY
