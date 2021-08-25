@@ -28,5 +28,4 @@ steps:
       python -m pip install --upgrade setuptools mock 'future>=0.17.1'
       python -m pip install --upgrade twine
       pip install -U pip numpy wheel
-      pip install -U keras_preprocessing --no-deps
     displayName: 'Setup Python and Dependencies'
