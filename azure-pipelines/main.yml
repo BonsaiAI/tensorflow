@@ -1,0 +1,131 @@
+# Minimal Build pipeline
+# This allow us to generate wheels and upload that to a feed.
+
+# Job expected variables:
+# artifactFeed: the feed name to upload to. Note: specify
+# in a form of GUID/feed-name for twineAuthenticate to work.
+# poolName: the VMSS pool name to run the job on.
+
+variables:
+
+  wheels.dir: /tmp/tensorflow_pkg
+  bazel.startup.opts: --batch_cpu_scheduling --io_nice_level 7
+  bazel.build.opts: --jobs 16 --local_ram_resources=HOST_RAM*.8
+  numpy.version: '<1.19.0'
+
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(BuildID)
+stages:
+  - stage: Build
+    jobs:
+      - job: bazelBuild
+        timeoutInMinutes: 1440
+        cancelTimeoutInMinutes: 35
+        strategy:
+          matrix:
+            linux_python38:
+              image.name: 'ubuntu-20.04'
+              pool.name: $(linuxPool)
+              python.version: '3.8'
+              use.bazel.version: 3.1.0
+# Mac is not available for VMSS.
+#            macos1015_python38:
+#              image.name: 'macOS-10.15'
+#              python.version: '3.8'
+#              use.bazel.version: 3.1.0
+        displayName: Bazel build
+        pool:
+          #vmImage: $(image.name)
+          name: $(pool.name)
+        steps:
+
+# This can be used when running on a MS hosted agent:
+#          - template: templates/python-hosted.yml
+          - template: templates/python-vmss.yml
+          - template: templates/npm-vmss.yml
+          - template: templates/check-bazel.yml
+          - bash: |
+              pushd $BUILD_SOURCESDIRECTORY
+              # avoid side-effecting from previous builds
+              git clean -fdx
+              yes "" | ./configure
+              popd
+            displayName: "Configure a default TF2 build"
+          - template : templates/wheel-version.yml
+          - bash: |
+              # Doesn't work if installed in just the env, for includes
+              # specific to TF 2.3.0 -- restrict numpy version.
+              python -m pip install -U "numpy${NUMPY_VERSION}"
+              python -m pip install -U keras_preprocessing --no-deps --force-reinstall
+              python -m pip install -U keras_applications --no-deps --force-reinstall
+
+              source $PENV_HOME/bin/activate
+              echo switched to venv python: $(which python)
+              gcc --version
+              bazelisk --version
+
+              python -m pip install -U "numpy${NUMPY_VERSION}"
+              python -m pip install -U keras_preprocessing --no-deps
+              python -m pip install -U keras_applications --no-deps
+
+              # Running "bazel clean" for a good measure...
+              bazelisk clean
+              
+              # Retry for spurious failures. Bazel should cache successful steps.
+              for i in 1 2; do
+
+                echo Compilation attempt $i...
+
+                bazelisk $BAZEL_STARTUP_OPTS build $BAZEL_BUILD_OPTS //tensorflow/tools/pip_package:build_pip_package
+                compile_result="$?"
+                if [[ compile_result == 0 ]]; then
+                  break
+                fi
+              done
+
+              if [[ compile_result != 0 ]]; then
+                echo Compilation failed after $i attempts.
+              fi
+
+              exit $compile_result
+            displayName: 'Bazel build'
+            timeoutInMinutes: 1440
+          - bash: |
+              source $PENV_HOME/bin/activate
+              echo switched to venv python: $(which python)
+              # avid side-effecting from previous builds
+              rm -rf $(WHEELS_DIR)
+              tensorflow/tools/pip_package/build_pip_package.sh ${WHEELS_DIR}
+            displayName: 'Generate Wheels'
+            timeoutInMinutes: 1440
+          - task: TwineAuthenticate@1
+            displayName: 'Twine Authenticate'
+            inputs:
+              artifactFeed: $(artifactFeed)
+          - bash: |
+              source $PENV_HOME/bin/activate
+              echo switched to venv python: $(which python)
+              echo $PYPIRC_PATH
+              cat $PYPIRC_PATH
+              echo Running twine upload...
+              python -m twine upload -r $(basename ${ARTIFACTFEED}) --config-file ${PYPIRC_PATH} ${WHEELS_DIR}/*
+            displayName: 'Upload to ray-feed'
+          - task: ComponentGovernanceComponentDetection@0
+            inputs:
+              scanType: 'Register'
+              verbosity: 'Verbose'
+              dockerImagesToScan: ''
+              alertWarningLevel: 'Critical'
+              failOnAlert: false
+              ignoreDirectories: ''
+trigger:
+  branches:
+    include:
+      - master
+      - releases/*
+      - development
+pr:
+  branches:
+    include:
+      - master
+      - releases/*
+      - development
