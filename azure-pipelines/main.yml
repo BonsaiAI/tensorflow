@@ -120,9 +120,7 @@ stages:
 trigger:
   branches:
     include:
-      - master
-      - releases/*
-      - development
+      - msft-*
 pr:
   branches:
     include:
