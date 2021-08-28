@@ -36,6 +36,7 @@ stages:
         pool:
           #vmImage: $(image.name)
           name: $(pool.name)
+
         steps:
 
 # This can be used when running on a MS hosted agent:
@@ -110,6 +111,7 @@ stages:
               python -m twine upload -r $(basename ${ARTIFACTFEED}) --config-file ${PYPIRC_PATH} ${WHEELS_DIR}/*
             displayName: 'Upload to ray-feed'
           - task: ComponentGovernanceComponentDetection@0
+            condition: startsWith( variables['Build.SourceBranchName'], 'msft-')
             inputs:
               scanType: 'Register'
               verbosity: 'Verbose'
