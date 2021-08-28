@@ -26,8 +26,7 @@ steps:
       source $PENV_HOME/bin/activate
       echo switched to venv python: $(which python)
 
-      python -m pip install --upgrade pip six
+      python -m pip install --upgrade pip six wheel
       python -m pip install --upgrade setuptools mock 'future>=0.17.1'
       python -m pip install --upgrade twine
-      pip install -U pip numpy wheel
     displayName: 'Setup Python and Dependencies'
