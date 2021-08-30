@@ -94,7 +94,7 @@ stages:
               source $PENV_HOME/bin/activate
               echo switched to venv python: $(which python)
               # avid side-effecting from previous builds
-              rm -rf $(WHEELS_DIR)
+              rm -rf ${WHEELS_DIR}
               tensorflow/tools/pip_package/build_pip_package.sh ${WHEELS_DIR}
             displayName: 'Generate Wheels'
             timeoutInMinutes: 1440
