@@ -13,8 +13,8 @@ steps:
         exit 1
       fi
 
-      if [[ "$BUILD_SOURCEBRANCH" == *"master"* ]] || [[ "$BUILD_SOURCEBRANCH" == *"releases/"* ]]; then
-        VERSION_SUFIX=".${VERSION_SUFIX}"
+      if [[ "$BUILD_SOURCEBRANCH" == "msft-"* ]] || [[ "$BUILD_SOURCEBRANCH" == *"releases/"* ]]; then
+        VERSION_SUFIX="post.${VERSION_SUFIX}"
         echo "Release generation detected. The VERSION_SUFIX will be directly appended."
       else
         VERSION_SUFIX=".dev${VERSION_SUFIX}"
