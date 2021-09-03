@@ -14,7 +14,7 @@ steps:
       fi
 
       if [[ "$BUILD_SOURCEBRANCHNAME" == "msft-"* ]] || [[ "$BUILD_SOURCEBRANCH" == *"releases/"* ]]; then
-        VERSION_SUFIX="post.${VERSION_SUFIX}"
+        VERSION_SUFIX=".post${VERSION_SUFIX}"
         echo "Release generation detected. The VERSION_SUFIX will be directly appended."
       else
         VERSION_SUFIX=".dev${VERSION_SUFIX}"
