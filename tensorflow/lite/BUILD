@@ -1054,6 +1054,9 @@ tflite_cc_shared_object(
 #        "//tensorflow/lite:create_op_resolver_with_builtin_ops",
         "//tensorflow/lite/kernels:builtin_ops",
         "//tensorflow/lite/delegates/flex:delegate",
+        "//tensorflow/lite/delegates/flex:exported_symbols.lds",
+        "//tensorflow/lite/delegates/flex:version_script.lds",
+
     ],
 )
 
