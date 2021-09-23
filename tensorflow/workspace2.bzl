@@ -262,8 +262,8 @@ def _tf_repositories():
         urls = [
 #            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz",
 #            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz",
-            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/gnu-a/8.2-2019.01/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabihf.tar.xz",
-            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.2-2019.01/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabihf.tar.xz?revision=c69ea519-a965-4359-84a4-cbd440ff4130&hash=8DE93745C5497855B19F15D1BD8BF2C2",
+            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/gnu-a/8.2-2019.01/binrel/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabihf.tar.xz",
+            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.2-2019.01/binrel/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabihf.tar.xz",
         ],
     )
 
