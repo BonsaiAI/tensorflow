@@ -240,22 +240,30 @@ def _tf_repositories():
     tf_http_archive(
         name = "aarch64_linux_toolchain",
         build_file = "@tf_toolchains//toolchains/embedded/arm-linux:aarch64-linux-toolchain.BUILD",
-        sha256 = "8ce3e7688a47d8cd2d8e8323f147104ae1c8139520eca50ccf8a7fa933002731",
-        strip_prefix = "gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu",
+#        sha256 = "8ce3e7688a47d8cd2d8e8323f147104ae1c8139520eca50ccf8a7fa933002731",
+        sha256 = "6683d51b0dd61a91ab1e8e478a0a8a50ccb34d5590c84aa36697e956b16f14a1",
+#        strip_prefix = "gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu",
+        strip_prefix = "gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu",
         urls = [
-            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz",
-            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz",
+#            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz",
+#            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz",
+            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu.tar.xz",
+            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.2-2019.01/gcc-arm-8.2-2019.01-x86_64-aarch64-linux-gnu.tar.xz?revision=21270570-4ec0-4bad-a9e1-09707614066a&hash=1A0A911BEF3F29A9C9F8572BA977956F",
         ],
     )
 
     tf_http_archive(
         name = "armhf_linux_toolchain",
         build_file = "@tf_toolchains//toolchains/embedded/arm-linux:armhf-linux-toolchain.BUILD",
-        sha256 = "d4f6480ecaa99e977e3833cc8a8e1263f9eecd1ce2d022bb548a24c4f32670f5",
-        strip_prefix = "gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf",
+#        sha256 = "d4f6480ecaa99e977e3833cc8a8e1263f9eecd1ce2d022bb548a24c4f32670f5",
+        sha256 = "6b73016fa4773a7450bac9bd80b2ca056b5d582dd966b509a17b305fc89506a9",
+#        strip_prefix = "gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf",
+        strip_prefix = "gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabihf",
         urls = [
-            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz",
-            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz",
+#            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz",
+#            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-arm-linux-gnueabihf.tar.xz",
+            "https://storage.googleapis.com/mirror.tensorflow.org/developer.arm.com/media/Files/downloads/gnu-a/gnu-a/8.2-2019.01/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabihf.tar.xz",
+            "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.2-2019.01/gcc-arm-8.2-2019.01-x86_64-arm-linux-gnueabihf.tar.xz?revision=c69ea519-a965-4359-84a4-cbd440ff4130&hash=8DE93745C5497855B19F15D1BD8BF2C2",
         ],
     )
 
