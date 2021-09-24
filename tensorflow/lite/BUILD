@@ -1050,7 +1050,13 @@ tflite_cc_shared_object(
         ":framework",
         ":tflite_exported_symbols.lds",
         ":tflite_version_script.lds",
-        "//tensorflow/lite/kernels:builtin_ops_all_linked",
+#        "//tensorflow/lite/kernels:builtin_ops_all_linked",
+#        "//tensorflow/lite:create_op_resolver_with_builtin_ops",
+        "//tensorflow/lite/kernels:builtin_ops",
+        "//tensorflow/lite/delegates/flex:delegate",
+        "//tensorflow/lite/delegates/flex:exported_symbols.lds",
+        "//tensorflow/lite/delegates/flex:version_script.lds",
+
     ],
 )
 
