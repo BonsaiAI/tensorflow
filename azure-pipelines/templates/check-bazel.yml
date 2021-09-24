@@ -1,0 +1,29 @@
+# This template includes the steps of the general install phase
+# that is specified in the .travis.yml of the upstream repo.
+# This is the default install phase that is reused by some of the
+# parallel jobs in the build matrix of the .travis.yml file.
+
+steps:
+  - bash: |
+      set -xe
+
+      # We insist on bazelisk to be installed since it is able to
+      # run a specific bazel version, not necessarily the installed one.
+
+      if [[ -x "$(command -v bazelisk)" ]]; then
+        echo 'Bazelisk is already installed'
+      else
+        if [[ $AGENT_OS == "Darwin" ]]; then
+          . $HELPER_SCRIPTS/osx-bazelisk.sh
+        else
+          . $HELPER_SCRIPTS/linux-bazelisk.sh
+        fi
+      fi
+
+      bazelisk --version
+      bazelisk shutdown
+      exit 0
+    env:
+      HELPER_SCRIPTS: $(Build.SourcesDirectory)/azure-pipelines/scripts
+    displayName: 'Check Bazelisk'
+    timeoutInMinutes: 60

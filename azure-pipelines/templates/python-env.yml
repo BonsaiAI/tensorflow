@@ -1,0 +1,32 @@
+# Setting up python environment.
+
+steps:
+
+  - bash: |
+      if [[ "${AGENT_OS}" == "Linux" ]]; then
+        sudo apt install -y python3-dev
+      elif [[ "${AGENT_OS}" == "Darwin" ]]; then
+        echo TODO SET UP PYTHON HEADERS FOR DARWIN
+      fi
+
+      which python
+      pip install -U --user pip wheel
+
+      # setup venv
+      PENV_HOME="$PIPELINE_WORKSPACE/venv/p3"
+      # clean it if stale
+      rm -rf ${PENV_HOME}
+      mkdir "$PIPELINE_WORKSPACE/venv"
+
+      # Export PENV_HOME to other jobs. They now could presumably refer
+      # to it as $(penv.home) if needed.
+      echo "##vso[task.setvariable variable=penv.home]$PENV_HOME"
+
+      python -m venv $PENV_HOME
+      source $PENV_HOME/bin/activate
+      echo switched to venv python: $(which python)
+
+      python -m pip install --upgrade pip six wheel
+      python -m pip install --upgrade setuptools mock 'future>=0.17.1'
+      python -m pip install --upgrade twine
+    displayName: 'Setup Python and Dependencies'

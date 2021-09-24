@@ -1,0 +1,10 @@
+steps:
+  - bash: |
+
+      if [[ -x "$(command -v npm)" ]]; then
+        echo 'Bazelisk is already installed'
+      else
+        sudo apt install -y npm
+      fi
+
+    displayName: Check npm
